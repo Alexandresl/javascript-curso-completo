@@ -1,0 +1,138 @@
+@font-face {
+    font-family: 'Digital-7';
+    src: url('digital-7.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+#calculator {
+    width: 350px;
+    height: 600px;
+    margin: 50px auto;
+    background-image: linear-gradient(to top, #f0f0f0, #efefef, #efedee, #efebec, #efeaea);
+    border-radius: 30px;
+    border: 2px solid #707070;
+    box-shadow: 2px 2px 2px #cbcbcb;
+}
+
+#topo {
+    width: 320px;
+    height: 41px;
+    margin: 10px 15px;
+    background: #fff;
+    border: 1px solid #707070;
+    border-radius: 30px 30px 0 0;
+}
+
+#topo h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    line-height: 41px;
+    font-weight: lighter;
+    color: #707070;
+}
+
+#calcDisplay {
+    width: 320px;
+    height: 129px;
+    background-image: linear-gradient(to right bottom, #d4d4d4, #dbdbdb, #e3e3e3, #eaeaea, #f2f2f2);
+    border: 1px solid #707070;
+    border-radius: 20px;
+    margin: 0 15px;
+    box-shadow: 0 0 10px #707070 inset;
+    font-family: 'Digital-7', sans-serif;
+}
+
+#displayTop, #displayBottom {
+    width: 90%;
+    margin: 5px 5%;
+    height: 20px;
+    font-size: 16px;
+    color: #707070;
+    line-height: 20px;
+}
+
+#displayMain {
+    width: 90%;
+    margin: 5px 5%;
+    height: 50px;
+    font-size: 16px;
+    color: #707070;
+    line-height: 50px;
+    text-align: right;
+    font-size: 40px;
+}
+
+#displayTime, #displayFuctions {
+    display: inline-block;
+    text-align: left
+}
+
+#displayDate, #displayHistory {
+    display: inline-block;
+    text-align: right;
+    float: right;
+}
+
+#calcKeyboard ul{
+    width: 320px;
+    margin: 10px 15px;
+}
+
+#calcKeyboard ul li {
+    font-family: 'Roboto', sans-serif;
+    font-size: 32px;
+    color: #707070;
+    width: 70px;
+    height: 60px;
+    float: left;
+    border: 1px solid #707070;
+    margin: 0 4px 5px;
+    text-align: center;
+    line-height: 60px;
+    border-radius: 15px;
+    box-shadow: 0 0 5px #cbcbcb;
+    background-image: linear-gradient(to bottom, #ffffff, #f2f2f2, #e5e5e5, #d8d8d8, #cbcbcb);
+}
+
+#calcKeyboard ul .btn-adicao {
+    height: 125px;
+    float: right;
+    line-height: 125px;
+}
+
+#calcKeyboard ul li:active {
+    background-image: linear-gradient(to top, #ffffff, #f2f2f2, #e5e5e5, #d8d8d8, #cbcbcb);
+}
+
+#calcBottom {
+    width: 320px;
+    height: 30px;
+    margin: 10px 15px;
+    float: left;
+}
+
+#versao {
+    float: left;
+    font-family: 'Roboto', sans-serif;
+    line-height: 30px;
+    font-size: 20px;
+    color: #707070;
+}
+
+#logo {
+    float: right;
+}
+#logo img {
+    height: 30px;
+    margin: 0 5px;
+}
