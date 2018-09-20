@@ -5,6 +5,8 @@ class CalcController {
      * Irá conter os atributos da classe CalcController.
      */
     constructor() {
+        // atribuo que irá armazenar os últimos itens da minha operação
+        this._operation = [];
         // Atributo que determina o locale
         this._locale = "pt-BR";
         // Seleciona o elemento que exibe a hora no display
@@ -51,6 +53,141 @@ class CalcController {
     }
 
     /**
+     * Método criado para adicionar mais de um tipo de evento
+     * para um mesmo elemento sem a necessidade de duplicar 
+     * o código.
+     * receberemos como parâmetros: o elemento que eu quero
+     * adicionar a escuta, a lista de eventos que eu quero monitorar
+     * e a função que eu quero que seja executada.
+     */
+    addEventListenerAll(element, events, fn) {
+
+        /**
+         * O método split irá pegar uma string e transformá-la em um
+         * array. Este array terá cada elemento criado pelo separador
+         * utilizado como parâmetro, neste caso o espaço.
+         * Em seguida iremos fazer o forEach, percorrendo cada um dos
+         * itens listados como evento.
+         * 
+         * Assim poderemos posteriormente utilizando o método nativo
+         * addEventListener() adicionar vários tipos de eventos em 
+         * um mesmo elemento que irá executar uma mesma função.
+         */
+        events.split(' ').forEach(event => {
+
+            element.addEventListener(event, fn, false);
+
+        });
+
+    }
+
+    /**
+     * Método que irá apagar todo o histórico de operação da
+     * calculadora. Utilizado para o botão 'C'.
+     */
+    clearAll() {
+
+        this._operation = [];
+
+    }
+
+    /**
+     * irá cancelar a última entrada quando acionado o botão
+     * 'CE'
+     */
+    cancelEntry() {
+
+        this._operation.pop();
+
+    }
+
+    addOperation(value) {
+
+        this._operation.push(value);
+
+        console.log(this._operation);
+        
+
+    }
+
+    /**
+     * Método utilizado para operações ou entradas de usuário
+     * inválidas.
+     */
+    setError() {
+
+        this.displayCalc = "error";
+
+    }
+
+    /**
+     * @param value = "nome" do botão que foi clicado
+     * 
+     * irá pegar o "nome" do botão que sofreu determinado evento
+     * e através do switch determinar uma ação para quando este
+     * evento ocorrer.
+     */
+    execBtn(value) {
+
+        switch (value) {
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                this.addOperation(parseInt(value));
+                break;
+
+            case 'c':
+                this.clearAll();
+                break;
+        
+            case 'ce':
+                this.cancelEntry();
+                break;
+        
+            case 'porcento':
+                
+                break;
+        
+            case 'divisao':
+                
+                break;
+        
+            case 'multiplicacao':
+                
+                break;
+        
+            case 'subtracao':
+                
+                break;
+        
+            case 'soma':
+                
+                break;
+        
+            case 'ponto':
+                
+                break;
+        
+            case 'igual':
+                
+                break;
+        
+            default:
+                this.setError();
+                break;
+        }
+
+    }
+
+    /**
      * Método para capturar os eventos dos botões
      */
     initButtonsEvents() {
@@ -70,17 +207,41 @@ class CalcController {
 
             /**
              * adicionamos uma escuta de evento na variárvel buttons.
-             * O método addEventListener recebe 2 parâmetros, o evento
-             * que queremos monitorar, 'click' por exemplo, e que função
+             * O método addEventListenerAll será criado pois o método
+             * nativo addEventListener só recebe um evento por vez.
+             * Nosso método irá receber 3 parâmetros: o elemento que eu
+             * quero adicionar a escuta, os eventos que queremos monitorar, 
+             * 'click drag' por exemplo, e que função
              * queremos que seja realizada caso o evento ocorra.
              * 
              * Vamos utilizar uma arrow function. o parâmetro 'e' será utilizado
              * sempre que quisermos fazer referência ao elemento clicado.
              */
-            btn.addEventListener('click', e => {
+            this.addEventListenerAll(btn, 'click drag', e => {
 
-                console.log(btn.className.replace("btn-",""));
+                /**
+                 * recebo na variável textBtn uma string que
+                 * identifica o meu botão.
+                 */
+                let textBtn = btn.className.replace("btn-","");                
 
+                /**
+                 * Chama um método que irá através do switch
+                 * identificar o botão, que foi passado por parâmetro
+                 * e executar uma função de acordo com cada botão
+                 */
+                this.execBtn(textBtn);
+
+            });
+
+            /**
+             * Utilizaremos o método criado para adicionar o 
+             * cursor pointer em todos os botões deixando nossa
+             * aplicação mais intuitiva.
+             */
+            this.addEventListenerAll(btn, "mouseover mouseup mousedown", e => {
+
+                btn.style.cursor = "pointer";
 
             });
 
