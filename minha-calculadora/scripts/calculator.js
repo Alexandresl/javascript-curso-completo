@@ -1,2 +1,4 @@
-// Instância da classe CalcController
-let calculator = new CalcController();
+/**
+ * Instancia um objeto da classe CalcController
+ */
+window.calculator = new CalcController();

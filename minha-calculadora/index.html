@@ -6,39 +6,41 @@
     <title>Minha Calculadora</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
     <div id="calculator">
-        <div id="topo">
-            <h1>AL Sites</h1>
-        </div>
-        <div id="calcDisplay">
-            <div id="displayTop">
-                <div id="displayTime"></div><!--displayTime-->
-                <div id="displayDate"></div><!--displayDate-->
-            </div><!--displayTop-->
-            <div id="displayBottom">
-                <div id="displayFuctions">
-                    ♪
-                </div>
-                <!--displayFuctions-->
-                <div id="displayHistory">
-                    100 + 20 * 100 + 20 * 100 + 20 * 100 + 20 *
-                </div><!--displayhistory-->
-            </div><!--displayBottom-->
-            <div id="displayMain"></div><!--displayMain-->
-        </div><!--calcDisplay-->
-        <div id="calcKeyboard">
+
+        <div id="header">
+            AL Sites
+        </div><!-- #header -->
+
+        <div id="display">
+
+            <div id="display-top">
+
+                <div class="display-time"></div><!-- .display-time -->
+
+                <div class="display-date"></div><!-- .display-date -->
+
+            </div><!-- #display-top -->
+
+            <div id="display-main"></div><!-- #display-main -->
+
+        </div><!-- #display -->
+
+        <div id="keyboard">
+
             <ul>
-                <li class="btn-c">C </li>
+                <li class="btn-c">C</li>
                 <li class="btn-ce">CE</li>
                 <li class="btn-porcento">%</li>
                 <li class="btn-divisao">÷</li>
                 <li class="btn-7">7</li>
                 <li class="btn-8">8</li>
                 <li class="btn-9">9</li>
-                <li class="btn-multiplicacao">x</li>
+                <li class="btn-multiplicacao">×</li>
                 <li class="btn-4">4</li>
                 <li class="btn-5">5</li>
                 <li class="btn-6">6</li>
@@ -46,22 +48,31 @@
                 <li class="btn-1">1</li>
                 <li class="btn-2">2</li>
                 <li class="btn-3">3</li>
-                <li class="btn-adicao">+</li>
+                <li class="btn-soma">+</li>
                 <li class="btn-0">0</li>
                 <li class="btn-ponto">.</li>
                 <li class="btn-igual">=</li>
             </ul>
-        </div><!--calcKeyboard-->
-        <div id="calcBottom">
-            <div id="versao">
+
+        </div><!-- #keyboard -->
+
+        <div id="footer">
+
+            <div id="calculator-versao">
                 Calculator 1.0
-            </div>
-            <div id="logo">
-                <img src="assets/new_logo.png" alt="AL Sites - Calculator 1.0" title="AL Sites - Calculator 1.0">
-            </div>
-        </div>
-    </div><!--calculator-->
+            </div><!-- #calculator-versao -->
+
+            <div id="calculator-logo">
+                <img src="assets/new_logo.png" alt="AL Sites">
+            </div><!-- #calculator-logo -->
+
+        </div><!-- #footer -->
+
+    </div><!-- #calculator -->
+
+    <!-- Scripts -->
     <script src="scripts/controller/CalcController.js"></script>
     <script src="scripts/calculator.js"></script>
+
 </body>
 </html>
