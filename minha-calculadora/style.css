@@ -20,7 +20,10 @@ ul {
     height: 560px;
     margin: 0 auto;
     background: #F5F5F5;
-    border: 1px solid #6A5E79;
+    border-top: 1px solid #6A5E7950;
+    border-right: 6px solid #6A5E7950;
+    border-bottom: 3px solid #6A5E7950;
+    border-left: 1px solid #6A5E7950;
     border-radius: 15px;
     box-shadow: 5px 10px 5px #6A5E7980;
 }
@@ -59,25 +62,40 @@ ul {
 .display-time {
     float: left;
     width: 18%;
-    padding: 2px 0 2px 2%;
+    padding: 2px 0 0 2%;
     text-align: left;
 }
 
 .display-date {
     float: right;
     width: 78%;
-    padding: 2px 2% 2px 0;
+    padding: 2px 2% 0 0;
     text-align: right;
 }
 
+#display-function {
+    float: left;
+    width: 100%;
+    font-size: 17px;
+    height: 17px;
+}
+
+.display-audio {
+    width: 18%;
+    padding: 0 0 0 2%;
+    text-align: left;
+    visibility: hidden;
+}
+
 #display-main {
-    width: 98%;
-    height: 73px;
-    line-height: 73px;
+    float: left;
+    width: 96%;
+    height: 56px;
+    line-height: 56px;
     font-size: 35px;
     text-align: right;
     border-radius: 0 0 15px 15px;
-    padding: 0 2% 0 0;
+    padding: 0 2%;
 }
 
 #keyboard {
