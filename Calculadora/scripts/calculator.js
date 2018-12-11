@@ -1,5 +1,5 @@
 /**
- * Instancia a classe CalcController
+ * Instância da classe CalcController
  */
 
-window.calculator = new CalcController();
+let calculator = new CalcController();
