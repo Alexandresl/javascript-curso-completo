@@ -1,8 +1,0 @@
-/**
- * Classe CalcController
- */
-class CalcController {
-
-    
-
-}
