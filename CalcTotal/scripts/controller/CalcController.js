@@ -3,10 +3,11 @@ class CalcController {
     constructor() {
 
         this._operation = [];
-        this._location = 'pt-BR';
+        this._locale = 'pt-BR';
         this._displayCalcEl = document.querySelector("#display-main");
-        this._dateEl = document.querySelector(".display-date");
-        this._timeEl = document.querySelector(".display-time");
+        this._displayHistoricEl = document.querySelector('#display-history');
+        this._dateEl = document.querySelector('.display-date');
+        this._timeEl = document.querySelector('.display-time');
         this._currentDate = "";
         this.initialize();
         this.initButtonsEvents();
@@ -22,6 +23,18 @@ class CalcController {
     set displayCalc(value) {
 
         this._displayCalcEl.innerHTML = value;
+
+    }
+
+    get displayHistoricEl() {
+
+        return this._displayHistoricEl.innerHTML;
+
+    }
+
+    set displayHistoricEl(value) {
+
+        this._displayHistoricEl.innerHTML = value;
 
     }
 
@@ -73,22 +86,11 @@ class CalcController {
 
     }
 
-    setDisplayDateTime() {
-
-        this.dateEl = this.currentDate.toLocaleDateString(this._location, {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
-        this.timeEl = this.currentDate.toLocaleTimeString(this._location);
-
-    }
-
-    addEventListenerAll(element, events, fn) {
+    addEventListenerAll(el, events, fn) {
 
         events.split(" ").forEach(event => {
 
-            element.addEventListener(event, fn);
+            el.addEventListener(event, fn);
 
         });
 
@@ -124,12 +126,6 @@ class CalcController {
 
     }
 
-    isOperator(value) {
-
-        return (['+', '-', '*', '/', '%'].indexOf(value) > -1);
-
-    }
-
     calc() {
 
         let last = this._operation.pop();
@@ -138,11 +134,7 @@ class CalcController {
 
         this._operation = [result, last];
 
-    }
-
-    setLastNumberToDisplay() {
-
-        
+        this.setLastNumberToDisplay();
 
     }
 
@@ -158,6 +150,32 @@ class CalcController {
 
     }
 
+    setLastNumberToDisplay() {
+
+        let lastNumber;
+
+        for (let i = this._operation.length - 1; i >= 0; i--) {
+
+            if (!this.isOperator(this._operation[i])) {
+
+                lastNumber = this._operation[i];
+
+                break;
+
+            }
+
+        }
+
+        this.displayCalc = lastNumber;
+
+    }
+
+    isOperator(value) {
+
+        return (['+', '-', '*', '/', '%'].indexOf(value) > -1);
+
+    }
+
     addOperation(value) {
 
         if (isNaN(this.getLastOperation())) {
@@ -166,7 +184,7 @@ class CalcController {
 
             if (this.isOperator(value)) {
 
-                // Trocar o operador
+                // Trocar os operadores
 
                 this.setLastOperation(value);
 
@@ -176,7 +194,11 @@ class CalcController {
 
             } else {
 
+                // Primeiro número
+
                 this.pushOperation(value);
+
+                this.setLastNumberToDisplay();
 
             }
 
@@ -194,6 +216,8 @@ class CalcController {
 
                 this.setLastOperation(parseInt(newValue));
 
+                this.setLastNumberToDisplay();
+
             }
 
         }
@@ -209,11 +233,11 @@ class CalcController {
             case 'c':
                 this.clearAll();
                 break;
-            
+
             case 'ce':
                 this.clearEntry();
                 break;
-            
+
             case 'soma':
                 this.addOperation('+');
                 break;
@@ -241,7 +265,7 @@ class CalcController {
             case 'ponto':
                 this.addOperation('.');
                 break;
-
+            
             case '0':
             case '1':
             case '2':
@@ -254,10 +278,11 @@ class CalcController {
             case '9':
                 this.addOperation(parseInt(value));
                 break;
-            
+
             default:
                 this.setError();
                 break;
+            
 
         }
 
@@ -265,13 +290,13 @@ class CalcController {
 
     initButtonsEvents() {
 
-        let buttons = document.querySelectorAll("#keyboard > ul > li");
+        let buttons = document.querySelectorAll('#keyboard > ul > li');
 
         buttons.forEach(btn => {
 
             this.addEventListenerAll(btn, 'click drag', () => {
 
-                let textBtn = btn.className.replace("btn-", "");
+                let textBtn = btn.className.replace('btn-', '');
 
                 this.execBtn(textBtn);
 
@@ -281,9 +306,20 @@ class CalcController {
 
                 btn.style.cursor = "pointer";
 
-            }); 
+            });
 
         });
+
+    }
+
+    setDisplayDateTime() {
+
+        this.dateEl = this.currentDate.toLocaleDateString(this._locale, {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+        this.timeEl = this.currentDate.toLocaleTimeString(this._locale);
 
     }
 

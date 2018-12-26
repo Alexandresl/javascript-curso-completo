@@ -3,11 +3,11 @@ class CalcController {
     constructor() {
 
         this._operation = [];
-        this._locale = "pt-BR";
+        this._locale = 'pt-BR';
         this._displayCalcEl = document.querySelector("#display-main");
         this._dateEl = document.querySelector(".display-date");
         this._timeEl = document.querySelector(".display-time");
-        this._currentDate = '';
+        this._currentDate = "";
         this.initialize();
         this.initButtonsEvents();
 
@@ -76,11 +76,13 @@ class CalcController {
     setDisplayDateTime() {
 
         this.dateEl = this.currentDate.toLocaleDateString(this._locale, {
+
             day: '2-digit',
             month: 'long',
             year: 'numeric'
+
         });
-        
+
         this.timeEl = this.currentDate.toLocaleTimeString(this._locale);
 
     }
@@ -113,9 +115,15 @@ class CalcController {
 
     }
 
+    getLastOperation() {
+
+        return this._operation[this._operation.length - 1];
+
+    }
+
     isOperator(value) {
 
-        return (['+', '-', '*', '/', '%'].indexOf(value) > -1)
+        return (['+', '-', '*', '/', '%'].indexOf(value) > -1);
 
     }
 
@@ -129,7 +137,7 @@ class CalcController {
 
         let last = this._operation.pop();
 
-        let result = eval(this._operation.join(''));
+        let result = eval(this._operation.join(""));
 
         this._operation = [result, last];
 
@@ -137,7 +145,7 @@ class CalcController {
 
     }
 
-    pushOperator(value) {
+    pushOperation(value) {
 
         this._operation.push(value);
 
@@ -173,23 +181,21 @@ class CalcController {
 
         if (isNaN(this.getLastOperation())) {
 
-            // string
+            // String
 
-            if (this.isOperator()) {
-
-                // É um operador
+            if (this.isOperator(value)) {
 
                 this.setLastOperation(value);
 
             } else if (isNaN(value)) {
 
-                // É um ponto
+                // Ponto
 
             } else {
 
-                // É um número
+                // Number
 
-                this.pushOperator(value);
+                this.pushOperation(value);
 
                 this.setLastNumberToDisplay();
 
@@ -197,11 +203,11 @@ class CalcController {
 
         } else {
 
-            // number
+            // Número
 
             if (this.isOperator(value)) {
 
-                this.pushOperator(value);
+                this.pushOperation(value);
 
             } else {
 
@@ -219,12 +225,6 @@ class CalcController {
 
     }
 
-    getLastOperation() {
-
-        return this._operation[this._operation.length - 1];
-
-    }
-
     execBtn(value) {
 
         switch (value) {
@@ -232,39 +232,39 @@ class CalcController {
             case 'c':
                 this.clearAll();
                 break;
-            
+
             case 'ce':
                 this.clearEntry();
                 break;
-            
+
             case 'soma':
                 this.addOperation('+');
                 break;
-            
+
             case 'subtracao':
                 this.addOperation('-');
                 break;
-            
+
             case 'multiplicacao':
                 this.addOperation('*');
                 break;
-            
+
             case 'divisao':
                 this.addOperation('/');
                 break;
-            
+
             case 'porcento':
                 this.addOperation('%');
                 break;
-            
+
             case 'igual':
 
                 break;
-            
+
             case 'ponto':
                 this.addOperation('.');
                 break;
-            
+
             case '0':
             case '1':
             case '2':
@@ -277,10 +277,9 @@ class CalcController {
             case '9':
                 this.addOperation(parseInt(value));
                 break;
-            
+
             default:
                 this.setError();
-                break;
 
         }
 
