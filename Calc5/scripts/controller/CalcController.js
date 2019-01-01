@@ -2,14 +2,14 @@ class CalcController {
 
     constructor() {
 
-        this._operation = [];
-        this._locale = "pt-BR";
         this._displayCalcEl = document.querySelector("#display-main");
         this._dateEl = document.querySelector(".display-date");
         this._timeEl = document.querySelector(".display-time");
+        this._historicEl = document.querySelector("#display-historic");
+        this._audioEl = document.querySelector(".display-audio");
+
         this._currentDate = "";
         this.initialize();
-        this.initButtonsEvents();
 
     }
 
@@ -22,18 +22,6 @@ class CalcController {
     set displayCalc(value) {
 
         this._displayCalcEl.innerHTML = value;
-
-    }
-
-    get currentDate() {
-
-        return new Date();
-
-    }
-
-    set currentDate(value) {
-
-        this._currentDate = value;
 
     }
 
@@ -58,370 +46,52 @@ class CalcController {
     set timeEl(value) {
 
         this._timeEl.innerHTML = value;
+
+    }
+
+    get historicEl() {
+
+        return this._historicEl.innerHTML;
+
+    }
+
+    set historicEl(value) {
+
+        this._historicEl.innerHTML = value;
+
+    }
+
+    get audioEl() {
+
+        return this._audioEl.innerHTML;
+
+    }
+
+    set audioEl(value) {
+
+        this._audioEl.innerHTML = value;
+
+    }
+
+    get currentDate() {
+
+        return this._currentDate;
+
+    }
+
+    set currentDate(value) {
+
+        this._currentDate = value;
+
     }
 
     initialize() {
 
-        this.setDiplayDateTime();
-
-        setInterval(() => {
-
-            this.setDiplayDateTime();
-
-        }, 1000);
-
-        this.setLastNumerToDisplay();
-
-    }
-
-    setDiplayDateTime() {
-
-        this.dateEl = this.currentDate.toLocaleDateString(this._locale, {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
-
-        this.timeEl = this.currentDate.toLocaleTimeString(this._locale);
-
-    }
-
-    addEventListenerAll(element, events, fn) {
-
-        events.split(" ").forEach(event => {
-
-            element.addEventListener(event, fn);
-
-        });
-
-    }
-
-    clearAll() {
-
-        this._operation = [];
-
-        this.setLastNumerToDisplay();
-
-    }
-
-    clearEntry() {
-
-        this._operation.pop();
-
-        this.setLastNumerToDisplay();
-
-    }
-
-    setError() {
-
-        this.displayCalc = "Error";
-
-    }
-
-    getLastOperation() {
-
-        return this._operation[this._operation.length - 1];
-
-    }
-
-    isOperator(value) {
-
-        return (['+', '-', '*', '/', '%'].indexOf(value) > -1)
-        
-    }
-
-    setLastOperation(value) {
-
-        this._operation[this._operation.length - 1] = value;
-
-    }
-
-    calcPercent() {
-
-        let percent;
-
-        if (this.getLastOperatorExceptPercent() === "*" && this.getLastOperatorExceptPercent() === "/") {
-
-            percent = this.getLastNumber() / 100;
-
-        } else {
-
-            percent = this.getFirstNumber() * this.getLastNumber() / 100;
-
-        }
-
-        this.setLastOperation(percent);
-
-    }
-
-    calc() {
-
-        let last = "";
-
-        if (this._operation.length > 3 ) {
-
-            last = this._operation.pop();
-
-        }
-
-        if (last === "%") {
-
-            this.calcPercent();
-
-        } else {
-
-            if (this.getLastOperation() === "%") {
-
-                this.calcPercent();
-
-            } else {
-
-                let result = eval(this._operation.join(""));
-
-                this._operation = [result];
-
-                if (last) this._operation.push(last);
-
-            }
-            
-        }
-
-        this.setLastNumerToDisplay();
-
-    }
-
-    pushOperation(value) {
-
-        this._operation.push(value);
-
-        if (this._operation.length < 3) {
-
-            if (value === "%") {
-
-                this.clearAll();
-
-            }
-
-        } else if (this._operation.length > 3) {
-
-           this.calc();
-
-        }
-
-    }
-
-    getLastOperatorExceptPercent() {
-
-        let lastOperator;
-
-        for (let i = 0; i <= this._operation.length - 1; i++) {
-
-            if (this.isOperator(this._operation[i]) && this._operation[i] !== "%") {
-
-                lastOperator = this._operation[i];
-
-                break;
-
-            }
-
-        }
-
-        return lastOperator;
-
-    }
-
-    getFirstNumber() {
-
-        let firstNumber;
-
-        for (let i = 0; i <= this._operation.length - 1; i++) {
-
-            if (!this.isOperator(this._operation[i])) {
-
-                firstNumber = this._operation[i];
-
-                break;
-
-            }
-
-        }
-
-        return firstNumber;
-
-    }
-
-    getLastNumber() {
-
-        let lastNumber;
-
-        for (let i = this._operation.length - 1; i >= 0; i--) {
-
-            if (!this.isOperator(this._operation[i])) {
-
-                lastNumber = this._operation[i];
-
-                break;
-
-            }
-
-        }
-
-        return lastNumber;
-
-    }
-
-    setLastNumerToDisplay() {
-
-        let lastNumber = this.getLastNumber();
-
-        if (!lastNumber) lastNumber = 0;
-
-        this.displayCalc = lastNumber;
-
-    }
-
-    addOperation(value) {
-
-        if (isNaN(this.getLastOperation())) {
-
-            // string
-
-            if (this.isOperator(value)) {
-
-                // É um operador substitui
-
-                if (value !== "%") {
-
-                    this.setLastOperation(value);
-
-                } else if (this._operation > 0) {
-
-                    this.pushOperation(value);
-
-                    calc();
-
-                }
-
-            } else if (isNaN(value)){
-
-                // É um ponto
-
-            } else {
-
-                // Primeiro número
-
-                this.pushOperation(value);
-
-                this.setLastNumerToDisplay();
-
-            }
-
-        } else {
-
-            // número
-
-            if (this.isOperator(value)) {
-
-                this.pushOperation(value);
-
-            } else {
-
-                let newValue = this.getLastOperation().toString() + value.toString();
-
-                this.setLastOperation(parseInt(newValue));
-
-                this.setLastNumerToDisplay();
-
-            }
-
-        }
-
-        console.log(this._operation);
-
-    }
-
-    execBtn(value) {
-
-        switch (value) {
-
-            case 'c':
-                this.clearAll();
-                break;
-            
-            case 'ce':
-                this.clearEntry();
-                break;
-            
-            case 'soma':
-                this.addOperation('+');
-                break;
-            
-            case 'subtracao':
-                this.addOperation('-');
-                break;
-            
-            case 'multiplicacao':
-                this.addOperation('*');
-                break;
-            
-            case 'divisao':
-                this.addOperation('/');
-                break;
-            
-            case 'porcento':
-                this.addOperation('%');
-                break;
-            
-            case 'igual':
-                this.calc();
-                break;
-            
-            case 'ponto':
-                this.addOperation('.');
-                break;
-            
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                this.addOperation(parseInt(value));
-                break;
-            default:
-                this.setError();
-                break;
-            
-
-        }
-
-    }
-
-    initButtonsEvents() {
-
-        let buttons = document.querySelectorAll("#keyboard > ul > li");
-
-        buttons.forEach(btn => {
-
-            this.addEventListenerAll(btn, "click drag", () => {
-
-                let textBtn = btn.className.replace("btn-", "");
-
-                this.execBtn(textBtn);
-
-            });
-
-            this.addEventListenerAll(btn, "mouseover mouseup mousedown", () => {
-
-                btn.style.cursor = "pointer";
-
-            });
-
-        });
+        this.displayCalc = "0";
+        this.dateEl = "01/01/2019";
+        this.timeEl = "21:38";
+        this.historicEl = "1 + 1";
+        this.audioEl = "♪";
 
     }
 
