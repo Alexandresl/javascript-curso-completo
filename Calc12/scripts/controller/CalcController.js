@@ -9,7 +9,7 @@ class CalcController {
         this._historicEl = document.querySelector("#display-historic");
         this._audioEl = document.querySelector(".display-audio");
         this._currentDate = '';
-        this.initialize();
+        this.initialize()
 
     }
 
@@ -105,6 +105,12 @@ class CalcController {
             year: 'numeric'
         });
         this.timeEl = this.currentDate.toLocaleTimeString(this._locale);
+
+    }
+
+    initButtonsEvents() {
+
+        let buttons = document.querySelectorAll('#keyboard > ul > li');
 
     }
 

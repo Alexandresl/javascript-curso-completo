@@ -108,4 +108,10 @@ class CalcController {
 
     }
 
+    initButtonsEvents() {
+
+        let buttons = document.querySelectorAll("#keyboard > ul > li");
+
+    }
+
 }
