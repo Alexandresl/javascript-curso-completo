@@ -9,7 +9,8 @@ class CalcController {
         this._historicEl = document.querySelector("#display-historic");
         this._audioEl = document.querySelector(".display-audio");
         this._currentDate = '';
-        this.initialize()
+        this.initialize();
+        this.initButtonsEvents();
 
     }
 
@@ -111,6 +112,16 @@ class CalcController {
     initButtonsEvents() {
 
         let buttons = document.querySelectorAll('#keyboard > ul > li');
+
+        buttons.forEach(btn => {
+
+            btn.addEventListener('click', () => {
+
+                console.log(btn.className.replace('btn-', ''));
+
+            });
+
+        });
 
     }
 
