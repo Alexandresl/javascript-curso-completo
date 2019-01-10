@@ -2,12 +2,13 @@ class CalcController {
 
     constructor() {
 
+        this._operation = [];
         this._locale = 'pt-BR';
-        this._displayCalcEl = document.querySelector('#display-main');
-        this._dateEl = document.querySelector('.display-date');
-        this._timeEl = document.querySelector('.display-time');
-        this._historicEl = document.querySelector('#display-historic');
-        this._audioEl = document.querySelector('.display-audio');
+        this._displayCalcEl = document.querySelector("#display-main");
+        this._dateEl = document.querySelector(".display-date");
+        this._timeEl = document.querySelector(".display-time");
+        this._historicEl = document.querySelector("#display-historic");
+        this._audioEl = document.querySelector(".display-audio");
         this._currentDate = "";
         this.initialize();
         this.initButtonsEvents();
@@ -111,7 +112,7 @@ class CalcController {
 
     addEventListenerAll(el, events, fn) {
 
-        events.split(' ').forEach(event => {
+        events.split(" ").forEach(event => {
 
             el.addEventListener(event, fn);
 
@@ -119,23 +120,111 @@ class CalcController {
 
     }
 
+    clearAll() {
+
+        this._operation = [];
+
+    }
+
+    clearEntry() {
+
+        this._operation.pop();
+
+    }
+
+    setError() {
+
+        this.displayCalcEl = 'Error';
+
+    }
+
+    addOperation(value) {
+
+        this._operation.push(value);
+
+        console.log(this._operation);
+
+    }
+
+    execBtn(value) {
+
+        switch (value) {
+
+            case 'c':
+                this.clearAll();
+                break;
+
+            case 'ce':
+                this.clearEntry();
+                break;
+
+            case 'soma':
+
+                break;
+
+            case 'subtracao':
+
+                break;
+
+            case 'multiplicacao':
+
+                break;
+
+            case 'divisao':
+
+                break;
+
+            case 'porcento':
+
+                break;
+
+            case 'igual':
+
+                break;
+
+            case 'ponto':
+
+                break;
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                this.addOperation(parseInt(value));
+                break;
+
+            default:
+                this.setError();
+
+        }
+
+    }
+
     initButtonsEvents() {
 
-        let buttons = document.querySelectorAll('#keyboard > ul > li');
+        let buttons = document.querySelectorAll("#keyboard > ul > li");
 
         buttons.forEach(btn => {
 
             this.addEventListenerAll(btn, 'click drag', () => {
 
-                console.log(btn.className.replace('btn-', ''));
+                let textBtn = btn.className.replace('btn-', '');
+
+                this.execBtn(textBtn);
 
             });
 
-            this.addEventListenerAll(btn, 'mouseover mousedown mouseup', () => {
+            this.addEventListenerAll(btn, 'mouseover mouseup mousedown', () => {
 
                 btn.style.cursor = 'pointer';
 
-            });
+            })
 
         });
 
