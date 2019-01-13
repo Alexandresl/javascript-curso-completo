@@ -2,14 +2,16 @@ class CalcController {
 
     constructor() {
 
-        this._operation = [];
+        this._toContinue = true;
+        this._historic = [];
+        this._oparation = [];
         this._locale = 'pt-BR';
-        this._displayCalcEl = document.querySelector("#display-main");
-        this._dateEl = document.querySelector(".display-date");
-        this._timeEl = document.querySelector(".display-time");
-        this._historicEl = document.querySelector("#display-historic");
-        this._audioEl = document.querySelector(".display-audio");
-        this._currentDate = "";
+        this._displayCalcEl = document.querySelector('#display-main');
+        this._timeEl = document.querySelector('.display-time');
+        this._dateEl = document.querySelector('.display-date');
+        this._historicEl = document.querySelector('#display-historic');
+        this._audioEl = document.querySelector('.display-audio');
+        this._currentDate = '';
         this.initialize();
         this.initButtonsEvents();
 
@@ -27,18 +29,6 @@ class CalcController {
 
     }
 
-    get dateEl() {
-
-        return this._dateEl.innerHTML;
-
-    }
-
-    set dateEl(value) {
-
-        this._dateEl.innerHTML = value;
-
-    }
-
     get timeEl() {
 
         return this._timeEl.innerHTML;
@@ -48,6 +38,18 @@ class CalcController {
     set timeEl(value) {
 
         this._timeEl.innerHTML = value;
+
+    }
+
+    get dateEl() {
+
+        return this._dateEl.innerHTML;
+
+    }
+
+    set dateEl(value) {
+
+        this._dateEl.innerHTML = value;
 
     }
 
@@ -97,22 +99,13 @@ class CalcController {
 
         }, 1000);
 
-    }
-
-    setDisplayDateTime() {
-
-        this.dateEl = this.currentDate.toLocaleDateString(this._locale, {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
-        this.timeEl = this.currentDate.toLocaleTimeString(this._locale);
+        this.setLastNumberToDisplay();
 
     }
 
-    addEventListenerAll(el, events, fn) {
+    addEventListenerAll(el, events, fn ) {
 
-        events.split(" ").forEach(event => {
+        events.split(' ').forEach(event => {
 
             el.addEventListener(event, fn);
 
@@ -120,15 +113,79 @@ class CalcController {
 
     }
 
+    clearAllHistoric() {
+
+        this._historic = [];
+
+    }
+
+    clearEntryHistoric() {
+
+        this._historic.pop();
+
+    }
+
+    pushHistoric(value) {
+
+        this._historic.push(value);
+
+    }
+
+    getLastHistoric() {
+
+        return this._historic[this._historic.length - 1];
+
+    }
+
+    addHistoric() {
+
+        if (
+            this._historic.length > 0 && 
+            !this.isOperator(this.getLastHistoric()) && 
+            !this.isOperator(this.getLastOperation()) ||
+            this.isOperator(this.getLastHistoric()) &&
+            this.isOperator(this.getLastOperation())
+        ) {
+
+            this.setLastHistoric(this.getLastOperation());
+
+        } else {
+
+            this.pushHistoric(this.getLastOperation());
+
+        }
+
+        console.log('this._historic: ', this._historic);        
+
+    }
+
+    setLastHistoric(value) {
+
+        this._historic[this._historic.length - 1] = value;
+
+    }
+
     clearAll() {
 
-        this._operation = [];
+        this._oparation = [];
+
+        this.clearAllHistoric();
+
+        this.setLastNumberToDisplay();
+
+        this.setHistoricToDisplay();
 
     }
 
     clearEntry() {
 
-        this._operation.pop();
+        this._oparation.pop();
+
+        this.clearEntryHistoric();
+
+        this.setLastNumberToDisplay();
+
+        this.setHistoricToDisplay();
 
     }
 
@@ -140,31 +197,175 @@ class CalcController {
 
     getLastOperation() {
 
-        return this._operation[this._operation.length - 1];
+        return this._oparation[this._oparation.length - 1];
 
     }
 
     setLastOperation(value) {
 
-        this._operation[this._operation.length - 1] = value;
+        this._oparation[this._oparation.length - 1] = value;
 
     }
 
-    calc() {
+    setHistoricToDisplay(validation = true) {
 
-        let last = this._operation.pop();
+        if (isNaN(this.getLastHistoric()) || !validation) {
+
+            this.historicEl = this._historic.join(' ');
+
+        }
+
+    }
+
+    getLastOperatorExceptPercent() {
+
+        let lastOperator;
+
+        for (let i = this._oparation.length - 1; i >= 0; i--) {
+
+            if (this.isOperator(this._oparation[i]) && this._oparation[i] !== '%') {
+
+                lastOperator = this._oparation[i];
+
+                break;
+
+            }
+
+        }
+
+        return lastOperator;
+
+    }
+
+    getFirstNumber() {
+
+        let firstNumber;
+
+        for (let i = 0; i <= this._oparation.length - 1; i++) {
+
+            if (!this.isOperator(this._oparation[i])) {
+
+                firstNumber = this._oparation[i];
+
+                break;
+
+            }
+
+        }
+
+        return firstNumber;
+
+    }
+
+    getLastNumber() {
+
+        let lastNumber;
+
+        for (let i = this._oparation.length - 1; i >= 0; i--) {
+
+            if (!this.isOperator(this._oparation[i])) {
+
+                lastNumber = this._oparation[i];
+
+                break;
+
+            }
+
+        }
+
+        return lastNumber;
         
-        let result = eval(this._operation.join(''));
+    }
 
-        this._operation = [result, last];
+    setLastNumberToDisplay() {
+
+        let lastNumber = this.getLastNumber();
+
+        if (!lastNumber) lastNumber = 0;
+
+        this.displayCalcEl = lastNumber;
+
+    }
+
+    calcPercent() {
+
+        let percent;
+
+        if (this.getLastOperatorExceptPercent() === '*' || this.getLastOperatorExceptPercent() === '/') {
+
+            percent = this.getLastNumber() / 100;
+
+        } else {
+
+            percent = this.getFirstNumber() * this.getLastNumber() / 100;
+
+        }        
+
+        this.setLastOperation(percent);
+
+        this.addHistoric();
+
+        this.setHistoricToDisplay(false);
+
+    }
+
+    calc(toContinue = true) {
+
+        let last;
+
+        this._toContinue = toContinue;
+
+        if (this._oparation.length > 3) {
+
+            last = this._oparation.pop();
+
+        }
+
+        if (last === '%') {
+
+            this.calcPercent();
+
+        } else {
+
+            if (this.getLastOperation() === '%') {
+
+                this.calcPercent();
+
+            } else {
+
+                let result = eval(this._oparation.join(''));
+
+                this._oparation = [result];
+
+                if (last) this.pushOperation(last);
+
+            }
+
+        }
+
+        this.setLastNumberToDisplay();
+
+        if (this._toContinue === false) {
+
+            this.clearAllHistoric();
+
+        }
 
     }
 
     pushOperation(value) {
 
-        this._operation.push(value);
+        this._oparation.push(value);
 
-        if (this._operation.length > 3) {
+        if (this._oparation.length < 3) {
+
+            if (value === '%') {
+                
+                this.clearAll();
+
+            }
+
+        } else if (this._oparation.length > 3) {
 
             this.calc();
 
@@ -184,11 +385,21 @@ class CalcController {
 
             // String
 
-            if(this.isOperator(value)) {
+            if (this.isOperator(value)) {
 
-                // Troca o operador
+                // Trocar o operador
 
-                this.setLastOperation(value);
+                if (value !== '%') {
+
+                    this.setLastOperation(value);
+
+                } else {
+
+                    this.pushOperation(value);
+
+                    this.calc();
+
+                }
 
             } else if (isNaN(value)) {
 
@@ -196,9 +407,11 @@ class CalcController {
 
             } else {
 
-                // Primeiro número
+                // primeiro número
 
                 this.pushOperation(value);
+
+                this.setLastNumberToDisplay();
 
             }
 
@@ -210,17 +423,37 @@ class CalcController {
 
                 this.pushOperation(value);
 
+                this._toContinue = true;
+
             } else {
 
-                let newValue = this.getLastOperation().toString() + value.toString();
+                if (this._toContinue === true) {
 
-                this.setLastOperation(parseInt(newValue));
+                    let newValue = this.getLastOperation().toString() + value.toString();
+
+                    this.setLastOperation(parseInt(newValue));
+
+                } else {
+
+                    this.clearAll();
+
+                    this.pushOperation(value);
+
+                    this._toContinue = true;
+
+                }
+
+                this.setLastNumberToDisplay();
 
             }
 
         }
 
-        console.log(this._operation);
+        this.addHistoric();
+
+        this.setHistoricToDisplay();
+
+        console.log(this._oparation);
 
     }
 
@@ -231,39 +464,39 @@ class CalcController {
             case 'c':
                 this.clearAll();
                 break;
-
+            
             case 'ce':
                 this.clearEntry();
                 break;
-
+            
             case 'soma':
                 this.addOperation('+');
                 break;
-
+            
             case 'subtracao':
                 this.addOperation('-');
                 break;
-
+            
             case 'multiplicacao':
                 this.addOperation('*');
                 break;
-
+            
             case 'divisao':
                 this.addOperation('/');
                 break;
-
+            
             case 'porcento':
                 this.addOperation('%');
                 break;
-
+            
             case 'igual':
-
+                this.calc(false);
                 break;
-
+            
             case 'ponto':
                 this.addOperation('.');
                 break;
-
+            
             case '0':
             case '1':
             case '2':
@@ -276,9 +509,10 @@ class CalcController {
             case '9':
                 this.addOperation(parseInt(value));
                 break;
-
+            
             default:
                 this.setError();
+            
 
         }
 
@@ -302,9 +536,20 @@ class CalcController {
 
                 btn.style.cursor = 'pointer';
 
-            })
+            });
 
         });
+
+    }
+
+    setDisplayDateTime() {
+
+        this.dateEl = this.currentDate.toLocaleDateString(this._locale, {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+        this.timeEl = this.currentDate.toLocaleTimeString(this._locale);    
 
     }
 
