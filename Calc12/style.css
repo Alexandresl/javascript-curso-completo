@@ -159,7 +159,7 @@ ul {
     float: left;            
 }
 
-#calculator-versao {
+#calculator-audio-toogle {
     font-size: 17px;
     font-weight: bold;
     line-height: 27px;
@@ -167,6 +167,42 @@ ul {
     text-align: left;
     float: left;
     margin: 0 0 0 8%;
+}
+
+#calculator-audio-toogle .line-through {
+    font-family: 'Times New Roman', Times, serif;
+    text-decoration: line-through;
+}
+
+.toggle {
+
+    width: 30px;
+    height: 15px;
+    border-radius: 30px;
+    border: 2px solid #999;
+
+}
+
+.toggle span.on {
+
+    width: 9px;
+    height: 9px;
+    background: #6A5E79;
+    float: left;
+    border-radius: 13px;
+    margin: 0 1px;
+
+}
+
+.toggle span.off {
+
+    width: 9px;
+    height: 9px;
+    background: #6A5E79;
+    float: right;
+    border-radius: 13px;
+    margin: 0 1px;
+
 }
 
 #calculator-logo {
