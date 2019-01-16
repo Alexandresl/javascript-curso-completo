@@ -2,14 +2,18 @@ class CalcController {
 
     constructor() {
 
+        this._toContinue = true;
+        this._historic = [];
+        this._operation = [];
         this._locale = 'pt-BR';
         this._displayCalcEl = document.querySelector('#display-main');
         this._dateEl = document.querySelector('.display-date');
         this._timeEl = document.querySelector('.display-time');
         this._historicEl = document.querySelector('#display-historic');
         this._audioEl = document.querySelector('.display-audio');
-        this._currentDate = "";
+        this._currentDate = '';
         this.initialize();
+        this.initButtonsEvents();
 
     }
 
@@ -84,7 +88,7 @@ class CalcController {
         this._currentDate = value;
 
     }
-    
+
     initialize() {
 
         this.setDisplayDateTime();
@@ -94,6 +98,448 @@ class CalcController {
             this.setDisplayDateTime();
 
         }, 1000);
+
+        this.setLastNumberToDisplay();
+
+    }
+
+    clearAllHistoric() {
+
+        this._historic = [];
+
+        this.setHistoricToDisplay(false);
+
+    }
+
+    clearEntryHistoric() {
+
+        this._historic.pop();
+
+        this.setHistoricToDisplay(false);
+
+    }
+
+    pushHistoric(value) {
+
+        this._historic.push(value);
+
+    }
+
+    getLastHistoric() {
+
+        return this._historic[this._historic.length - 1];
+
+    }
+
+    setLastHistoric(value) {
+
+        this._historic[this._historic.length - 1] = value;
+
+    }
+
+    addHistoric() {
+
+        if ( 
+            !this.isOperator(this.getLastHistoric()) && 
+            !this.isOperator(this.getLastOperation()) && 
+            this._historic.length > 0 || 
+            this.isOperator(this.getLastHistoric()) && 
+            this.isOperator(this.getLastOperation())
+        ) {
+
+            this.setLastHistoric(this.getLastOperation());
+
+        } else {
+
+            this.pushHistoric(this.getLastOperation());
+
+        }
+
+        console.log('this._historic: ', this._historic);
+
+    }
+
+    setHistoricToDisplay(validation = true) {
+
+        if (isNaN(this.getLastHistoric()) || !validation) {
+
+            this.historicEl = this._historic.join(' ');
+
+        }
+
+    }
+
+    clearAll() {
+
+        this._operation = [];
+
+        this.clearAllHistoric();
+
+        this.setLastNumberToDisplay();
+
+    }
+
+    clearEntry() {
+
+        this._operation.pop();
+
+        this.clearEntryHistoric();
+
+        this.setLastNumberToDisplay();
+
+    }
+
+    setError() {
+
+        this.displayCalcEl = 'Error';
+
+    }
+
+    getLastOperation() {
+
+        return this._operation[this._operation.length - 1];
+
+    }
+
+    setLastOperation(value) {
+
+        this._operation[this._operation.length - 1] = value;
+
+    }
+
+    isOperator(value) {
+
+        return (['+', '-', '*', '/', '%'].indexOf(value) > -1);
+
+    }
+
+    getLastOperatorExceptPercent() {
+
+        let lastOperator;
+
+        for (let i = this._operation.length - 1; i >= 0; i--) {
+
+            if (this.isOperator(this._operation[i]) && this._operation[i] !== '%') {
+
+                lastOperator = this._operation[i];
+
+                break;
+
+            }
+
+        }
+
+        return lastOperator;
+
+    }
+
+    getFirstNumber() {
+
+        let firstNumber;
+
+        for (let i = 0; i <= this._operation.length - 1; i++) {
+
+            if (!this.isOperator(this._operation[i])) {
+
+                firstNumber = this._operation[i];
+
+                break;
+
+            }
+
+        }
+
+        return firstNumber;
+
+    }
+
+    getLastNumber() {
+
+        let lastNumber;
+
+        for (let i = this._operation.length - 1; i >= 0; i--) {
+
+            if (!this.isOperator(this._operation[i])) {
+
+                lastNumber = this._operation[i];
+
+                break;
+
+            }
+
+        }
+
+        return lastNumber;
+
+    }
+
+    setLastNumberToDisplay() {
+
+        let lastNumber = this.getLastNumber();
+
+        if (!lastNumber) lastNumber = 0;
+
+        this.displayCalcEl = lastNumber;
+
+    }
+
+    calcPercent() {
+
+        let percent;
+
+        if (
+            this.getLastOperatorExceptPercent() === '*' ||
+            this.getLastOperatorExceptPercent() === '/'
+        ) {
+
+            percent = this.getLastNumber() / 100;
+
+        } else {
+
+            percent = this.getFirstNumber() * this.getLastNumber() / 100;
+
+        }
+
+        this.setLastOperation(percent);
+
+        this.addHistoric();
+
+        this.setHistoricToDisplay(false);
+
+    }
+
+    calc(toContinue = true) {
+
+        let last;
+
+        this._toContinue = toContinue;
+        
+        if (this._operation.length > 3) {
+
+            last = this._operation.pop();
+
+        }
+
+        if (last === '%') {
+
+            this.calcPercent();
+
+        } else {
+
+            if (this.getLastOperation() === '%') {
+
+                this.calcPercent();
+
+            } else {
+
+                let result = eval(this._operation.join(''));
+
+                this._operation = [result];
+
+                if (last) this._operation.push(last);
+
+            }
+        }
+
+        this.setLastNumberToDisplay();
+
+        if (this._toContinue === false) {
+
+            this.clearAllHistoric();
+
+        }
+
+    }
+
+    pushOperator(value) {
+
+        this._operation.push(value);
+
+        if (this._operation.length < 3) {
+
+            if (value === '%') {
+
+                this.clearAll();
+
+            }
+
+        } else if (this._operation.length > 3) {
+
+            this.calc();
+
+        }
+
+    }
+
+    addOperation(value) {
+
+        if (isNaN(this.getLastOperation())) {
+
+            // String
+
+            if (this.isOperator(value)) {
+
+                // change operator
+
+                if (value !== '%') {
+
+                    this.setLastOperation(value);
+
+                } else {
+
+                    this.pushOperator(value);
+
+                    this.calc();
+
+                }
+
+            } else if (isNaN(value)) {
+
+                // dot
+
+            } else {
+
+                // First Number
+
+                this.pushOperator(value);
+
+                this.setLastNumberToDisplay();
+
+            }
+
+        } else {
+
+            // Number
+
+            if (this.isOperator(value)) {
+
+                this.pushOperator(value);
+
+                this._toContinue = true;
+
+            } else {
+
+                if (this._toContinue === true) {
+
+                    let newValue = this.getLastOperation().toString() + value.toString();
+
+                    this.setLastOperation(parseInt(newValue));
+
+                } else {
+
+                    this.clearAll();
+
+                    this.pushOperator(value);
+
+                    this._toContinue = true;
+
+                }
+
+                this.setLastNumberToDisplay();
+
+            }
+
+        }
+
+        this.addHistoric();
+
+        this.setHistoricToDisplay();
+
+        console.log(this._operation);
+
+    }
+
+    execBtn(value) {
+
+        switch (value) {
+
+            case 'c':
+                this.clearAll();
+                break;
+            
+            case 'ce':
+                this.clearEntry();
+                break;
+
+            case 'soma':
+                this.addOperation('+');
+                break;
+            
+            case 'subtracao':
+                this.addOperation('-');
+                break;
+            
+            case 'multiplicacao':
+                this.addOperation('*');
+                break;
+            
+            case 'divisao':
+                this.addOperation('/');
+                break;
+            
+            case 'porcento':
+                this.addOperation('%');
+                break;
+            
+            case 'igual':
+                this.calc(false);
+                break;
+            
+            case 'ponto':
+                this.addOperation('.');
+                break;
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                this.addOperation(parseInt(value));
+                break;
+            
+            default:
+                this.setError();
+
+        }
+
+    }
+
+    addEventListenerAll(el, events, fn) {
+
+        events.split(' ').forEach(event => {
+
+            el.addEventListener(event, fn);
+
+        });
+
+    }
+
+    initButtonsEvents() {
+
+        let buttons = document.querySelectorAll('#keyboard > ul > li');
+
+        buttons.forEach(btn => {
+
+            this.addEventListenerAll(btn, 'click drag', () => {
+
+                let textBtn = btn.className.replace('btn-', '');
+
+                this.execBtn(textBtn);
+
+            });
+
+            this.addEventListenerAll(btn, 'mouseover mouseup mousedown', () => {
+
+                btn.style.cursor = 'pointer';
+
+            });
+
+        });
 
     }
 

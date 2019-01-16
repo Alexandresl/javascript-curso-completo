@@ -512,7 +512,6 @@ class CalcController {
             
             default:
                 this.setError();
-            
 
         }
 
