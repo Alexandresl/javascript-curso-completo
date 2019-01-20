@@ -2,7 +2,7 @@ class CalcController {
 
     constructor() {
 
-        this._locale = 'pt-br';
+        this._locale = 'pt-BR';
         this._displayCalcEl = document.querySelector('#display-main');
         this._dateEl = document.querySelector('.display-date');
         this._timeEl = document.querySelector('.display-time');
@@ -10,6 +10,7 @@ class CalcController {
         this._audioEl = document.querySelector('.display-audio');
         this._currentDate = '';
         this.initialize();
+        this.initButtonsEvents();
 
     }
 
@@ -94,6 +95,12 @@ class CalcController {
             this.setDisplayDateTime();
 
         }, 1000);
+
+    }
+
+    initButtonsEvents() {
+
+        let buttons = document.querySelectorAll('#keyboard > ul > li');
 
     }
 
