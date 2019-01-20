@@ -102,6 +102,16 @@ class CalcController {
 
         let buttons = document.querySelectorAll('#keyboard > ul > li');
 
+        buttons.forEach(btn => {
+
+            btn.addEventListener('click', () => {
+
+                console.log(btn.className.replace('btn-', ''));
+
+            });
+
+        });
+
     }
 
     setDisplayDateTime() {
