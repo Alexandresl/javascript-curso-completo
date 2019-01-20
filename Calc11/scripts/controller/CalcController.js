@@ -2,10 +2,11 @@ class CalcController {
 
     constructor() {
 
+        this._locale = 'pt-BR';
         this._displayCalcEl = document.querySelector('#display-main');
         this._dateEl = document.querySelector('.display-date');
         this._timeEl = document.querySelector('.display-time');
-        this._histpricEl = document.querySelector('#display-historic');
+        this._historicEl = document.querySelector('#display-historic');
         this._audioEl = document.querySelector('.display-audio');
         this._currentDate = '';
         this.initialize();
@@ -48,15 +49,15 @@ class CalcController {
 
     }
 
-    get histpricEl() {
+    get historicEl() {
 
-        return this._histpricEl.innerHTML;
+        return this._historicEl.innerHTML;
 
     }
 
-    set histpricEl(value) {
+    set historicEl(value) {
 
-        this._histpricEl.innerHTML = value;
+        this._historicEl.innerHTML = value;
 
     }
 
@@ -74,7 +75,7 @@ class CalcController {
 
     get currentDate() {
 
-        return this._currentDate;
+        return new Date();
 
     }
 
@@ -86,11 +87,24 @@ class CalcController {
 
     initialize() {
 
-        this.displayCalcEl = 0;
-        this.dateEl = '20/01/2019';
-        this.timeEl = '12:01';
-        this.histpricEl = '11 + 11';
-        this.audioEl = '♪';
+        this.setDisplayDateTime();
+
+        setInterval(() => {
+
+            this.setDisplayDateTime();
+
+        }, 1000);
+
+    }
+
+    setDisplayDateTime() {
+
+        this.dateEl = this.currentDate.toLocaleDateString(this._locale, {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+        this.timeEl = this.currentDate.toLocaleTimeString(this._locale);
 
     }
 
