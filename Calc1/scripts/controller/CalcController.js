@@ -2,6 +2,7 @@ class CalcController {
 
     constructor() {
 
+        this._historic = [];
         this._operation = [];
         this._locale = 'pt-BR';
         this._displayCalcEl = document.querySelector('#display-main');
@@ -113,11 +114,75 @@ class CalcController {
 
         this._operation = [];
 
+        this.clearAllHistoric();
+
     }
 
     clearEntry() {
 
         this._operation.pop();
+
+        this.clearEntryHistoric();
+
+    }
+
+    clearAllHistoric() {
+
+        this._historic = [];
+
+    }
+
+    clearEntryHistoric() {
+
+        this._historic.pop();
+
+    }
+
+    pushHistoric(value) {
+
+        this._historic.push(value);
+
+    }
+
+    getLastHistoric() {
+
+        return this._historic[this._historic.length - 1];
+
+    }
+
+    addHistoric() {
+
+        if (
+            this._historic.length > 0 &&
+            !this.isOperator(this.getLastHistoric()) &&
+            !this.isOperator(this.getLastOperation()) ||
+            this.isOperator(this.getLastHistoric()) &&
+            this.isOperator(this.getLastOperation())
+        ) {
+
+            this.setLastHistoric(this.getLastOperation());
+
+        } else {
+
+            this.pushHistoric(this.getLastOperation());
+
+        }
+
+    }
+
+    setHistoricToDisplay(validation = true) {
+
+        if (isNaN(this.getLastHistoric()) || !validation) {
+
+            this.historicEl = this._historic.join(' ');
+
+        }
+
+    }
+
+    setLastHistoric(value) {
+
+        this._historic[this._historic.length - 1] = value;
 
     }
 
@@ -235,7 +300,13 @@ class CalcController {
 
         }
 
-        console.log(this._operation);
+        this.addHistoric();
+
+        this.setHistoricToDisplay();
+
+        console.log('this._historic', this._historic);
+
+        console.log('this._operation',this._operation);
 
     }
 
