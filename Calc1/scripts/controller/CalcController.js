@@ -2,6 +2,9 @@ class CalcController {
 
     constructor() {
 
+        this._lastOperator = '';
+        this._lastNumber = '';
+        this._toContinue = true;
         this._historic = [];
         this._operation = [];
         this._locale = 'pt-BR';
@@ -115,6 +118,10 @@ class CalcController {
     clearAll() {
 
         this._operation = [];
+
+        this._lastNumber = '';
+
+        this._lastOperator = '';
 
         this.clearAllHistoric();
 
@@ -254,15 +261,15 @@ class CalcController {
 
     }
 
-    getLastNumber() {
+    getLastItem(isOperator = true) {
 
-        let lastNumber;
+        let lastItem;
 
         for (let i = this._operation.length - 1; i >= 0; i--) {
 
-            if (!this.isOperator(this._operation[i])) {
+            if (this.isOperator(this._operation[i]) === isOperator) {
 
-                lastNumber = this._operation[i];
+                lastItem = this._operation[i];
 
                 break;
 
@@ -270,13 +277,19 @@ class CalcController {
 
         }
 
-        return lastNumber;
+        if (!lastItem) {
+
+            lastItem = (isOperator) ? this._lastOperator : this._lastNumber;
+
+        }
+
+        return lastItem;
 
     }
 
     setLastNumberToDisplay() {
 
-        let lastNumber = this.getLastNumber();
+        let lastNumber = this.getLastItem(false);
 
         if (!lastNumber) lastNumber = 0;
 
@@ -293,11 +306,11 @@ class CalcController {
             this.getLastOperatorExceptPercent() === '/'
         ) {
 
-            percent = this.getLastNumber() / 100;
+            percent = this.getLastItem(false) / 100;
 
         } else {
 
-            percent = this.getfirstNumber() * this.getLastNumber() / 100;
+            percent = this.getfirstNumber() * this.getLastItem(false) / 100;
 
         }
 
@@ -309,13 +322,41 @@ class CalcController {
 
     }
 
-    calc() {
+    getResult() {
+
+        return eval(this._operation.join(''));
+
+    }
+
+    calc(toContinue = true) {
 
         let last;
 
+        this._toContinue = toContinue;
+
+        this._lastOperator = this.getLastItem();
+
+        if (this._operation.length < 3) {
+
+            let firstNumber = this.getfirstNumber();
+
+            this._operation = [firstNumber, this._lastOperator, this._lastNumber];
+
+            this.clearAllHistoric();
+
+            this.setHistoricToDisplay();
+
+        }
+
         if (this._operation.length > 3) {
             
-            last = this._operation.pop();
+            last = this._operation.pop();            
+
+            this._lastNumber = this.getResult();
+
+        } else if (this._operation.length === 3) {
+
+            this._lastNumber = this.getLastItem(false);
 
         }
 
@@ -331,7 +372,7 @@ class CalcController {
 
             } else {
 
-                let result = eval(this._operation.join(''));
+                let result = this.getResult();
 
                 this._operation = [result];
 
@@ -415,11 +456,25 @@ class CalcController {
 
                 this.pushOperation(value);
 
+                this._toContinue = true;
+
             } else {
 
-                let newValue = this.getLastOperation().toString() + value.toString();
+                if (this._toContinue === true) {
 
-                this.setLastOperation(parseInt(newValue));
+                    let newValue = this.getLastOperation().toString() + value.toString();
+
+                    this.setLastOperation(parseInt(newValue));
+
+                } else {
+
+                    this.clearAll();
+
+                    this.pushOperation(value);
+
+                    this._toContinue = true;
+
+                }
 
                 this.setLastNumberToDisplay();
 
@@ -470,7 +525,7 @@ class CalcController {
                 break;
             
             case 'igual':
-                this.calc()
+                this.calc(false);
                 break;
             
             case 'ponto':
