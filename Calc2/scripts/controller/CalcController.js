@@ -328,6 +328,8 @@ class CalcController {
 
     calc(toContinue = true) {
 
+        if (this._operation.length === 0) return;
+
         let last;
 
         this._toContinue = toContinue;
@@ -395,6 +397,14 @@ class CalcController {
     }
 
     pushOperation(value) {
+        
+        /* if (!this._operation[0]) {
+
+            this.clearAll();
+
+            this._toContinue = true;
+
+        }  */
 
         this._operation.push(value);
 
@@ -466,7 +476,7 @@ class CalcController {
 
                     let newValue = this.getLastOperation().toString() + value.toString();
 
-                    this.setLastOperation(parseInt(newValue));
+                    this.setLastOperation(newValue);
 
                 } else {
 
@@ -491,6 +501,26 @@ class CalcController {
         console.log('this._historic: ', this._historic);
 
         console.log('this._operation: ',this._operation);
+
+    }
+
+    addDot() {
+
+        let lastOperation = this.getLastOperation();
+
+        if (typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return;
+
+        if (this.isOperator(lastOperation) || !lastOperation) {
+
+            this.pushOperation('0.');
+
+        } else {
+
+            this.setLastOperation(lastOperation.toString() + '.');
+
+        }
+
+        this.setLastNumberToDisplay();
 
     }
 
@@ -531,7 +561,7 @@ class CalcController {
                 break;
             
             case 'ponto':
-
+                this.addDot();
                 break;
             
             case '0':
