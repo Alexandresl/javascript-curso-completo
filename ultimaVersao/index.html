@@ -6,9 +6,10 @@
     <title>Minha Calculadora</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="unselectable">
 
     <div id="calculator">
 
@@ -16,7 +17,7 @@
             Calculator 2.0
         </div><!-- #header -->
 
-        <div id="display" class="unselectable">
+        <div id="display">
 
             <div id="display-top">
 
@@ -35,8 +36,6 @@
                 </div>
 
                 <div class="display-audio">
-
-                    <!--♪-->
                     
                 </div><!--.display-audio-->
                 
@@ -48,7 +47,7 @@
 
         <div id="keyboard">
 
-            <ul class="unselectable">
+            <ul >
                 <li class="btn-c">C</li>
                 <li class="btn-ce">CE</li>
                 <li class="btn-porcento">%</li>
@@ -76,9 +75,9 @@
 
             <div id="calculator-audio-toogle">
 
-                <span>♪</span>
+                <span><i class="material-icons">volume_up</i></span>
                 <button class="toggle"><span class="off"></span></button>
-                <span class="line-through">♪</span>
+                <span><i class="material-icons">volume_off</i></span>
 
             </div><!-- #calculator-versao -->
 
