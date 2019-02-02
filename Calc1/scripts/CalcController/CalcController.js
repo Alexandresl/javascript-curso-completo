@@ -87,6 +87,10 @@ class CalcController {
     initialize() {
 
         this.displayCalcEl = 0;
+        this.timeEl = '03:28';
+        this.dateEl = '02/02/2019';
+        this.historicEl = '1 + 1';
+        this.audioEl = '♪';
 
     }
 
