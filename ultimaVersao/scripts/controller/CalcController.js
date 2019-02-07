@@ -458,7 +458,7 @@ class CalcController {
 
         try {
 
-            return eval(this._operation.join('')).toStrasdfing();
+            return eval(this._operation.join('')).toString();
 
         } catch (e) {
 
@@ -686,23 +686,23 @@ class CalcController {
                 this.clearEntry();
                 break;
 
-            case 'soma':
+            case 'sum':
                 this.addOperation('+');
                 break;
 
-            case 'subtracao':
+            case 'subtraction':
                 this.addOperation('-');
                 break;
 
-            case 'multiplicacao':
+            case 'multiplication':
                 this.addOperation('*');
                 break;
 
-            case 'divisao':
+            case 'division':
                 this.addOperation('/');
                 break;
 
-            case 'porcento':
+            case 'percent':
                 this.addOperation('%');
                 break;
 
