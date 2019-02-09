@@ -2,6 +2,9 @@ class CalcController {
 
     constructor() {
 
+        this._audioOnOff = false;
+        this._audio = new Audio('click.mp3');
+        this._buttonToggleEl = document.querySelector('.toggle');
         this._lastOperator = '';
         this._lastNumber = '';
         this._toContinue = true;
@@ -16,6 +19,7 @@ class CalcController {
         this._currentDate = '';
         this.initialize();
         this.initButtonsEvents();
+        this.initKeyboard();
 
     }
 
@@ -30,6 +34,12 @@ class CalcController {
         if (value.toString().length > 14) {
 
             value = parseInt(value).toExponential(10);
+
+        }
+
+        if (value.toString().split('')[value.toString().split('').length - 1] !== '.') {
+
+            value = parseFloat(value).toLocaleString(this._locale).replace(',', '.');
 
         }
 
@@ -114,6 +124,130 @@ class CalcController {
         }, 1000);
 
         this.setOperationToDisplay();
+
+        this.pasteFromClipboard();
+
+        this.toggleAudio();
+
+    }
+
+    toggleAudio() {
+
+        this._buttonToggleEl.addEventListener('click', () => {
+
+            this._audioOnOff = !this._audioOnOff;
+
+            if (this._audioOnOff) {
+
+                this._buttonToggleEl.children[0].className = 'on';
+
+                this.audioEl = '♪';
+
+            } else {
+
+                this._buttonToggleEl.children[0].className = 'off';
+
+                this.audioEl = '';
+
+            }
+
+        });
+
+    }
+
+    playAudio() {
+
+        if (this._audioOnOff) {
+
+            this._audio.currentTime = 0;
+
+            this._audio.play();
+
+        }
+
+    }
+
+    initKeyboard() {
+
+        document.addEventListener('keyup', e => {
+
+            switch (e.key) {
+
+                case 'Escape':
+                    this.clearAll();
+                    this.playAudio();
+                    break;
+
+                case 'Backspace':
+                    this.clearEntry();
+                    this.playAudio();
+                    break;
+
+                case '%':
+                case '/':
+                case '*':
+                case '+':
+                case '-':
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    this.addOperation(e.key);
+                    this.playAudio();
+                    break;
+
+                case 'Enter':
+                case '=':
+                    this.calc(false);
+                    this.playAudio();
+                    break;
+
+                case '.':
+                case ',':
+                    this.addDot();
+                    this.playAudio();
+                    break;
+
+                case 'c':
+                    if (e.ctrlKey) this.copyToClipboard();
+
+            }
+
+        });
+
+    }
+
+    pasteFromClipboard() {
+
+        document.addEventListener('paste', e => {
+
+            let text = e.clipboardData.getData('Text');
+
+            if (!isNaN(text)) this.addOperation(parseFloat(text.replace(',', '.')));
+
+        });
+
+    }
+
+    copyToClipboard() {
+
+        let input = document.createElement('input');
+
+        input.value = this.displayCalcEl;
+
+        document.body.appendChild(input);
+
+        input.select();
+
+        document.execCommand('Copy');
+
+        input.remove();
 
     }
 
@@ -322,7 +456,7 @@ class CalcController {
             this.getLastOperatorExceptPercent() === '/'
         ) {
 
-            percent = (this.getLastOperation() / 100).toString();
+            percent = (this.getItem(false) / 100).toString();
 
         } else {
 
@@ -330,7 +464,7 @@ class CalcController {
 
         }
 
-        this.setLastOperation(percent);
+        this.setLastOperation(percent.toString());
 
         this.addHistoric();
 
@@ -340,7 +474,17 @@ class CalcController {
 
     getResult() {
 
-        return eval(this._operation.join('')).toString();
+        try {
+
+            return eval(this._operation.join('')).toString();
+
+        } catch(e) {
+
+            this.setError();
+
+            this.clearAllHistoric();
+
+        }
 
     }
 
@@ -396,7 +540,7 @@ class CalcController {
 
                 if (result.split('').indexOf('.') > -1) {
 
-                    result = parseFloat(parseFloat(result).toPrecision(15));
+                    result = parseFloat(parseFloat(result).toPrecision(15)).toString();
 
                 }
 
@@ -415,6 +559,10 @@ class CalcController {
         }
 
         this.setOperationToDisplay();
+
+        console.log('this._historic: ', this._historic);
+
+        console.log('this._operation: ', this._operation);
 
     }
 
@@ -445,6 +593,8 @@ class CalcController {
             // String
 
             if (this.isOperator(value)) {
+
+                if (this._operation.length === 0) return;
 
                 // Change operator
 
@@ -480,7 +630,15 @@ class CalcController {
 
                 this.pushOperation(value);
 
-                this.addHistoric();
+                if (this._historic.length === 0) {
+
+                    this._historic = this._operation;
+
+                } else {
+
+                    this.addHistoric();
+
+                }
 
                 this._toContinue = true;
 
@@ -501,8 +659,6 @@ class CalcController {
                     this._toContinue = true;
 
                 }
-
-
 
                 this.setOperationToDisplay();
 
@@ -542,6 +698,8 @@ class CalcController {
     }
 
     execBtn(value) {
+
+        this.playAudio();
 
         switch (value) {
 

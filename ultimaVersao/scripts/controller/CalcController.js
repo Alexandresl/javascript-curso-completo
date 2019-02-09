@@ -706,11 +706,11 @@ class CalcController {
                 this.addOperation('%');
                 break;
 
-            case 'igual':
+            case 'equal':
                 this.calc(false);
                 break;
 
-            case 'ponto':
+            case 'dot':
                 this.addDot();
                 break;
                 
