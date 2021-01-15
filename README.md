@@ -19,3 +19,5 @@
 ### 7. C02 - Orientação a Objetos e MVC
 
 ### 8. C03 - Método Construtor e Encapsulamento
+
+### 9. C04 - Manipulando o DOM
