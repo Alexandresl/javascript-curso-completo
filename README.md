@@ -23,3 +23,5 @@
 ### 9. C04 - Manipulando o DOM
 
 ### 10. C05 - Data e Hora
+
+### 11. C06 - QuerySelector
