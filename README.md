@@ -7,3 +7,5 @@
 ### 2. Conheça a plataforma Udemy e Certificado
 
 ### 3. Configurando ambiente (Git, VSCode, Chrome Developer Tools)
+
+### 4. Introdução ao JavaScript - Básico I
