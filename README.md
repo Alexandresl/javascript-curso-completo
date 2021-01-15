@@ -15,3 +15,5 @@
 ## Seção 2: Projeto Calculadora em JavaScript
 
 ### 6. C01 - Estruturando o Projeto
+
+### 7. C02 - Orientação a Objetos e MVC
