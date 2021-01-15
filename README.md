@@ -25,3 +25,5 @@
 ### 10. C05 - Data e Hora
 
 ### 11. C06 - QuerySelector
+
+### 12. C07 - Adicionando Evento Click
