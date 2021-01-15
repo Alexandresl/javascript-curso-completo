@@ -9,3 +9,5 @@
 ### 3. Configurando ambiente (Git, VSCode, Chrome Developer Tools)
 
 ### 4. Introdução ao JavaScript - Básico I
+
+### 5. Introdução ao JavaScript - Básico II
