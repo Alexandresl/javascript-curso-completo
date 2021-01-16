@@ -35,3 +35,5 @@
 ### 15. C10 - Adicionando operações - isNaN e Array.length
 
 ### 16. C11 - Eval - Validando o primeiro operador e calculando resultado
+
+### 17. C12 - For - Procurando o último número do Array
