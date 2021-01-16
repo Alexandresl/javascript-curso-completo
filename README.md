@@ -39,3 +39,7 @@
 ### 17. C12 - For - Procurando o último número do Array
 
 ### 18. C13 - Botão Porcento
+
+### 19. C14 - Clicando mais de uma vez no botão igual
+
+### 20. C15 - Botão Ponto
