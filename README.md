@@ -27,3 +27,7 @@
 ### 11. C06 - QuerySelector
 
 ### 12. C07 - Adicionando Evento Click
+
+### 13. C08 - Aplicando vários Eventos usando split()
+
+### 14. C09 - Switch
