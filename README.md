@@ -33,3 +33,5 @@
 ### 14. C09 - Switch
 
 ### 15. C10 - Adicionando operações - isNaN e Array.length
+
+### 16. C11 - Eval - Validando o primeiro operador e calculando resultado
