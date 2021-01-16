@@ -31,3 +31,5 @@
 ### 13. C08 - Aplicando vários Eventos usando split()
 
 ### 14. C09 - Switch
+
+### 15. C10 - Adicionando operações - isNaN e Array.length
