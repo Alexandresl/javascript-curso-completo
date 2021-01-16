@@ -43,3 +43,5 @@
 ### 19. C14 - Clicando mais de uma vez no botão igual
 
 ### 20. C15 - Botão Ponto
+
+### 21. C16 - Correções de Bugs com o Ponto
