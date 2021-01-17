@@ -47,3 +47,5 @@
 ### 21. C16 - Correções de Bugs com o Ponto
 
 ### 22. C17 - Eventos de Teclado
+
+### 23. C18 - Ctrl + c e Ctrl + v
