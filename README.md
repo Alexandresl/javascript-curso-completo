@@ -49,3 +49,5 @@
 ### 22. C17 - Eventos de Teclado
 
 ### 23. C18 - Ctrl + c e Ctrl + v
+
+### 24. C19 - Trabalhando com Áudio
