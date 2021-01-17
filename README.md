@@ -53,3 +53,7 @@
 ### 24. C19 - Trabalhando com Áudio
 
 ### 25. C20 - Definir o valor máximo
+
+### 26. C21 - Tratar outros erros no eval() com Try Catch
+
+### 27. C22 - Bonus
