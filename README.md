@@ -70,3 +70,4 @@
 
 ### 30. G2 - Manipulando o DOM
 
+### 31. G3 - Variáveis
