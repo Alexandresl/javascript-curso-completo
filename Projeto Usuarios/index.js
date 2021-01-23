@@ -1,8 +1,8 @@
 const nome = document.querySelector('#exampleInputName');
-const GeneroMasculino = document.querySelector('#exampleInputGenderM');
-const GeneroFeminino = document.querySelector('#exampleInputGenderF');
-const dataNascimento = document.querySelector('#exampleInputBirth');
-const Pais = document.querySelector('#exampleInputCountry');
-const email = document.querySelector('#exampleInputEmail1');
-const senha = document.querySelector('#exampleInputPassword1');
-const foto = document.querySelector('#exampleInputFile');
+const gender = document.querySelectorAll('#form-user-create [name=gender]:checked');
+const birth = document.querySelector('#exampleInputBirth');
+const country = document.querySelector('#exampleInputCountry');
+const email = document.querySelector('#exampleInputEmail');
+const password = document.querySelector('#exampleInputPassword');
+const photo = document.querySelector('#exampleInputFile');
+const admin = document.querySelector('#exempleInputAdmin');
