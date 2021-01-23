@@ -68,3 +68,5 @@
 
 [Link Github](https://github.com/hcodebr/curso-javascript-projeto-usuarios)
 
+### 30. G2 - Manipulando o DOM
+
