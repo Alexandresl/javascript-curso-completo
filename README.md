@@ -61,3 +61,10 @@
 ### 28. Repositório do Projeto da Calculadora
 
 [Link Github](https://github.com/hcodebr/curso-javascript-projeto-calculadora-clone-final)
+
+## Seção 3: Gerenciamento de Usuários
+
+### 29. G1 - Script incorporado e arquivo externo
+
+[Link Github](https://github.com/hcodebr/curso-javascript-projeto-usuarios)
+
