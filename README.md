@@ -73,3 +73,5 @@
 ### 31. G3 - Variáveis
 
 ### 32. G4 - Variáveis e Seletores
+
+### 33. G5 - forEach

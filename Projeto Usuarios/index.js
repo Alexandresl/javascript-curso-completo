@@ -6,3 +6,10 @@ const email = document.querySelector('#exampleInputEmail');
 const password = document.querySelector('#exampleInputPassword');
 const photo = document.querySelector('#exampleInputFile');
 const admin = document.querySelector('#exempleInputAdmin');
+
+
+var fields = document.querySelectorAll('#form-user-create [name]');
+
+fields.forEach((field, index) => {
+    console.log(field);
+});
