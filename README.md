@@ -75,3 +75,5 @@
 ### 32. G4 - Variáveis e Seletores
 
 ### 33. G5 - forEach
+
+### 34. G6 - IF e ELSE
