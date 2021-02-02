@@ -77,3 +77,7 @@
 ### 33. G5 - forEach
 
 ### 34. G6 - IF e ELSE
+
+### 35. G7 - Trabalhando com Json
+
+### 36. G8 - Trabalhando com eventos no JavaScript
